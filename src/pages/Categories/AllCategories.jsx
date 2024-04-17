@@ -16,13 +16,16 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 
 import { useNavigate } from "react-router-dom";
-import { createCategoriesApi, getCategoriesApi } from "../../http";
+import { createCategoriesApi, deleteCategoryApi, getCategoriesApi } from "../../http";
+import Header from "../../components/Header";
 
 const AllCategories = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
+
+
   const fetchCategories = async () => {
     try {
       const { data } = await getCategoriesApi();
@@ -36,6 +39,17 @@ const AllCategories = () => {
       console.log(error);
     }
   };
+
+
+  const handleDelete = async (catId) => {
+    try {
+      const { data } = await deleteCategoryApi(catId);
+      fetchCategories();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   useEffect(() => {
     fetchCategories();
@@ -63,7 +77,7 @@ const AllCategories = () => {
               variant="contained"
               color="error"
               onClick={() => {
-                handleClose();
+                handleDelete(params.row._id);
               }}
             >
               Delete
@@ -94,10 +108,11 @@ const AllCategories = () => {
       <Stack
         direction="row"
         display={"flex"}
-        justifyContent={"end"}
+        justifyContent={"space-between"}
         alignItems={"center"}
         marginBottom={"10px"}
       >
+        <Header title="Categories" />
         <Button
           variant="contained"
           color="success"

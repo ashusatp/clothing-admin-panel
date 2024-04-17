@@ -1,56 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Stack,
-  TextField,
-  Typography,
   useTheme,
   Button,
-  styled,
-  TextareaAutosize,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import {
+  addBrandToProductApi,
+  getBrandApi,
+  removeBrandFromProductApi,
+} from "../../http";
 
-const Brands = () => {
+const Brands = ({ brands, fetchProduct }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const navigate = useNavigate();
- 
+  const { id } = useParams();
 
-  const StocksData = [
-    {
-      id: "1",
-      name: "Adidas",
-      image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAnCAMAAABt2HtiAAAAYFBMVEX///8AAAAjHyDv7+/29vYTDQ4yLzDp6emura4JAADz8/OIh4cdGRp9fHwaFBaioaHh4eHb29s2NDTKyspYVlaQjo+op6dnZWa3t7fU09NDQUEqJyeYl5dKSEhycXHFxMWKJvkBAAAA5UlEQVRIie2STa+DIBBF5/IlCigWtNha+f//8mHy9qJJky48q7s5mTsMRDc3P8T8uKQFBegrYpSMtRe8joMxac5qTbQ0tYyhOec59JipdO3jOfFZHFAqZRFOaH7p9v0cvSyzqloTBm9a9/38uI+cKz0OSAzErMSHNkiJrtJcTSFoNRmXlj2n6rIFm/dPsw7Vgu/BUoK1euMWSudyl/Hz2g5FtVAcJAloF0OJEALJ5uMHkpy2qVyg1e7RkJtYiV4b+CMxIyI5pTA/Q4navBUyBvDDkXwUgnzDBafuP5JYxKF3c/Nd/gC2igl9lUxDXgAAAABJRU5ErkJggg==",
-    },
-    {
-      id: "2",
-      name: "Nike",
-      image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAMAAACfWMssAAAAY1BMVEX///8AAAD4+Pjs7OzLy8vV1dWAgIDa2tpMTEzn5+ceHh6Hh4fd3d2hoaHz8/P8/PxiYmKoqKhpaWmampp1dXUYGBiwsLDExMRUVFQsLCwTExM+Pj66urpvb28LCwuNjY0zMzMOFsniAAAA2UlEQVRIie2S2RKDIAwAjXig1vustdD//8qKUhUFsdPHsm+QbCYJWJbBYDD8gnMxL3Vce3vObFXmFpQXJRJuaKWV7NYjdbO7bME9t/wSA3SHpATgrL+mgBEvOIYwhAopdaI7s/pYtoMB5OItxjDxGORlWWxfEA1PMluQqeaPWZQK/dEXfIgko3HmyuXSX7dIUEtH47g8qffyhmZktZSjcUqQU2ie1vKkWoQ02vjbjlaYp1ptekUR3F6wGKL29C9q4wdeLUL1o21A1dwi1e1RQhIk30sGg+FPeQOwhQdDf2OfWwAAAABJRU5ErkJggg==",
-    },
-    {
-      id: "3",
-      name: "Puma",
-      image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAArCAMAAAAaGrsZAAAAYFBMVEX///8dHRsAAAAbGxnm5uYMDAgREQ4FBQAZGRcWFhTs7OzHx8fKysr19fVUVFOzs7LBwcGSkpFsbGytra2JiYl1dXSDg4NdXVynp6bV1dUvLy6hoaFHR0c0NDNjY2I7OzpljU9yAAABuElEQVRIiZ2W2RaCIBRF4SAIVA6lWFb6/38ZoBXmlO4nWLkF7oAR4ijI5UD+J6vqox/cUUH+rZ0SKPFwoxRUUYlnmf3jRYpTKho7ykE9koPnpzVPc0Upg9tqq+gbBuQr4kO4p9zenpwGMMjjkncHjfndD1vQARLlvHcCg3lPStjDhSrqaE7Mu12+Z+eLiUNTIZ0R+eiXfGBSFJNeiiaY6UOa6VIMT4pqSmyhv8dN4PjxKI3bcUpv38AQcgblI8sh5ChESbAgqSU3JWLWpyIIr/wNRIpzMMtgX6MLgAsBEZVhVtEEK9iN4ha+R3ezzFTN3R7LhKbAt3iP6FpilmJQSUDpX6wN5HDBMddhiDnwfNTgEqtdFyXgLHSlklTSlfU8N6NsbuOYfzsuzMTystk1L0zyyY9I/hR79Cc/WOzTCS69yRfadJq+5ZjaKhJ0IcZse8/R9+p6Hn/R3Slx3SqSypdSvHZzjon8ktysP/mLb5k9IqnVTjGyKVHL7TjD0W4WW76hHzIwtrlcPQcIhsseU7dKNOuPTRBhX3xcHWwv9F7ceg90nGCvrD2i/bewq3rcLRLvE8mVfsQX7ccP9tnQVoAAAAAASUVORK5CYII=",
-    },
-    {
-      id: "4",
-      name: "Zara",
-      image: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRb9ubgr-GQd9D5pd33Yaotr44yJvG_8glJN5mOL8KVLNNVnibe",
-    },
-  ];
+  const handleRemove = async (brandId) => {
+    try {
+      const { data } = await removeBrandFromProductApi(id, brandId);
+      fetchProduct();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "name", headerName: "Name", flex: 0.5 },
+    // { field: "_id", headerName: "ID", flex: 1.5 },
+    { field: "brand", headerName: "Name", flex: 0.5 },
     {
       field: "image",
       headerName: "Image",
@@ -71,7 +60,7 @@ const Brands = () => {
             boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)" // Add shadow for better visualization
           >
             <img
-              src={params.row.image}
+              src={params.row.image.url}
               alt=""
               height={"100%"}
               style={{ maxWidth: "100%", maxHeight: "80%", padding: "20px" }} // Make image responsive
@@ -100,7 +89,7 @@ const Brands = () => {
               variant="outlined"
               color="error"
               onClick={() => {
-                handleClose();
+                handleRemove(params.row._id);
               }}
             >
               Remove
@@ -123,7 +112,12 @@ const Brands = () => {
   };
   return (
     <Box m="20px">
-      <CreateStock open={open} handleClose={handleClose} />
+      <CreateStock
+        open={open}
+        fetchProduct={fetchProduct}
+        handleClose={handleClose}
+        productId={id}
+      />
       <Stack
         direction="row"
         display={"flex"}
@@ -177,10 +171,14 @@ const Brands = () => {
       >
         <DataGrid
           //   checkboxSelection
-          rows={StocksData}
+          rows={brands}
           columns={columns}
           rowHeight={120}
           pageSize={5}
+          getRowId={(row) => {
+            const id = row._id; // Replace 'id' with your actual unique identifier property
+            return id;
+          }}
           rowsPerPageOptions={[9]}
           getRowClassName={getRowClassName}
         />
@@ -197,95 +195,67 @@ const Brands = () => {
   );
 };
 
-const CreateStock = ({ open, handleClose }) => {
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
-  const handleSubmit = () => {
-    handleClose();
+const CreateStock = ({ open, handleClose, fetchProduct, productId }) => {
+  const [brands, setBrands] = useState([]);
+  const [brand, setBrand] = useState("");
+  const fetchCategories = async () => {
+    try {
+      const { data } = await getBrandApi();
+      const brandsWithIds = data.data.brands.map((brand, index) => ({
+        ...brand,
+        id: index + 1, // You can use any unique identifier here
+      }));
+
+      setBrands(brandsWithIds);
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const [imagePrev, setImagePrev] = useState("");
-  const [image, setImage] = useState("");
 
-  const changeImageHandler = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
-    reader.readAsDataURL(file);
-
-    reader.onloadend = () => {
-      setImagePrev(reader.result);
-      setImage(file);
-    };
+  const handleSubmit = async () => {
+    try {
+      const { data } = await addBrandToProductApi(productId, brand);
+      fetchProduct();
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Add Product</DialogTitle>
+    <Dialog open={open} onClose={handleClose} sx={{ minWidth: 400 }}>
+      <DialogTitle>Add Category</DialogTitle>
       <DialogContent>
-        <Stack>
-          {imagePrev && ( // Check if imagePrev has a value before rendering Image
-            // eslint-disable-next-line jsx-a11y/alt-text
-            <img src={imagePrev} /> // Ensure Image is imported correctly
-          )}
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-            onChange={changeImageHandler}
-          >
-            Product Image
-            <VisuallyHiddenInput type="file" />
-          </Button>
-        </Stack>
-
-        <TextField
-          autoFocus
-          required
-          margin="dense"
-          id="name"
-          name="Title"
-          type="text-area"
-          placeholder="Title"
-          fullWidth
-          variant="standard"
-          sx={{ color: "text.primary" }}
-        />
-        <TextareaAutosize
-          autoFocus
-          required
-          id="name"
-          name="email"
-          aria-label="Description"
-          placeholder="Description"
-          minRows={3}
-          style={{
-            width: "100%",
-            resize: "none",
-            fontFamily: "inherit",
-            color: "inherit",
-            background: "inherit",
-            marginTop: "20px",
-            fontSize: "20px",
-          }}
-        />
+        <Box sx={{ minWidth: 120, padding: 20 }}>
+          <FormControl fullWidth sx={{ minWidth: 150 }}>
+            <InputLabel id="demo-simple-select-label">Select Brand</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={brand}
+              label="Property"
+              onChange={(e) => setBrand(e.target.value)}
+            >
+              {brands.map((brand, index) => {
+                return (
+                  <MenuItem key={index} value={brand._id}>
+                    {brand.brand}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button
           variant="outlined"
           color="error"
           onClick={() => {
-            setImagePrev("");
-            setImage("");
             handleClose();
           }}
         >

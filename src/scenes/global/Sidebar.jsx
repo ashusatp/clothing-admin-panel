@@ -182,7 +182,7 @@ const Sidebar = () => {
             />
             <Item
               title="Offers"
-              to="/faq"
+              to="/offers"
               icon={<LocalOffer />}
               selected={selected}
               setSelected={setSelected}

@@ -26,7 +26,6 @@ const Categories = ({ categories, fetchProduct }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { id } = useParams();
-  console.log(categories);
 
   const handleRemove = async (catId) => {
     try {
@@ -38,7 +37,7 @@ const Categories = ({ categories, fetchProduct }) => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    { field: "_id", headerName: "ID", flex: 1.5 },
     { field: "category", headerName: "Category", flex: 0.5 },
     {
       field: "accessLevel",
@@ -145,7 +144,6 @@ const Categories = ({ categories, fetchProduct }) => {
           columns={columns}
           getRowId={(row) => {
             const id = row._id; // Replace 'id' with your actual unique identifier property
-            console.log("Row ID:", id);
             return id;
           }}
           rowHeight={90}

@@ -16,7 +16,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 
 import { useNavigate } from "react-router-dom";
-import { createBrandApi, getBrandApi } from "../../http";
+import { createBrandApi, deleteBrandApi, getBrandApi } from "../../http";
+import Header from "../../components/Header";
 
 const AllBrands = () => {
   const theme = useTheme();
@@ -42,6 +43,16 @@ const AllBrands = () => {
     fetchBrands();
   }, []);
   
+  const handleDelete = async (brandId) => {
+    try {
+      const { data } = await deleteBrandApi(brandId);
+      fetchBrands();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "brand", headerName: "Name", flex: 0.5 },
@@ -50,7 +61,6 @@ const AllBrands = () => {
       headerName: "Image",
       flex: 1,
       renderCell: (params) => {
-        console.log(params.row.image.url);
         return (
           <Box
             width="200px"
@@ -95,7 +105,7 @@ const AllBrands = () => {
               variant="contained"
               color="error"
               onClick={() => {
-                handleClose();
+                handleDelete(params.row._id);
               }}
             >
               Delete
@@ -122,10 +132,11 @@ const AllBrands = () => {
       <Stack
         direction="row"
         display={"flex"}
-        justifyContent={"end"}
+        justifyContent={"space-between"}
         alignItems={"center"}
         marginBottom={"10px"}
       >
+        <Header title="Brands" />
         <Button
           variant="contained"
           color="success"

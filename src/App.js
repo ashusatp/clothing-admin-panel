@@ -20,6 +20,7 @@ import Orders from "./pages/Orders/Orders";
 import SingleOrder from "./pages/Orders/SingleOrder";
 import Users from "./pages/Users/Users";
 import Transactions from "./pages/Trasactions/Transactions";
+import AllOffers from "./pages/Offers/AllOffers";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -39,6 +40,7 @@ function App() {
               <Route path="/products/:id" element={<SingleProduct />} />
               <Route path="/brands" element={<AllBrands />} />
               <Route path="/categories" element={<AllCategories />} />
+              <Route path="/offers" element={<AllOffers />} />
               <Route path="/orders" element={<Orders/>} />
               <Route path="/orders/:id" element={<SingleOrder/>} />
 

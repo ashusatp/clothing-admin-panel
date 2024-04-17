@@ -8,22 +8,22 @@ import Brands from "../Brands/Brands";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProductApi } from "../../http";
 const props = {
-  "Stocks" : Stocks,
-  "Categories": Categories,
-  "Brands": Brands
-}
+  Stocks: Stocks,
+  Categories: Categories,
+  Brands: Brands,
+};
 const SingleProduct = () => {
   const [property, setProperty] = useState("Stocks");
-  const [product,setProduct] = useState({
-    title: '',
-    image: { 
-      url: ''
+  const [product, setProduct] = useState({
+    title: "",
+    image: {
+      url: "",
     },
-    description: ''
+    description: "",
   });
   const State = props[property];
   const navigate = useNavigate();
-  const {id} = useParams();
+  const { id } = useParams();
   const fetchProduct = async () => {
     try {
       const { data } = await getProductApi(id);
@@ -32,7 +32,6 @@ const SingleProduct = () => {
       //   id: index + 1, // You can use any unique identifier here
       // }));
       setProduct(data.data.product);
-      console.log(data.data.product);
       // setProducts(productsWithIds);
     } catch (error) {
       console.log(error);
@@ -46,13 +45,17 @@ const SingleProduct = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.left}>
-        <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
           <Button
             variant="contained"
             color="success"
             sx={{ fontWeight: "bold" }}
             onClick={() => {
-              navigate('/products');
+              navigate("/products");
             }}
           >
             Back
@@ -65,18 +68,18 @@ const SingleProduct = () => {
                 id="demo-simple-select"
                 value={property}
                 label="Property"
-                onChange={(e)=>setProperty(e.target.value)}
+                onChange={(e) => setProperty(e.target.value)}
               >
-                <MenuItem value={'Stocks'}>Stocks</MenuItem>
-                <MenuItem value={'Categories'}>Categories</MenuItem>
-                <MenuItem value={'Brands'}>Brands</MenuItem>
+                <MenuItem value={"Stocks"}>Stocks</MenuItem>
+                <MenuItem value={"Categories"}>Categories</MenuItem>
+                <MenuItem value={"Brands"}>Brands</MenuItem>
               </Select>
             </FormControl>
           </Box>
         </Box>
         <div className={styles.image}>
           <img
-            src={product.image.url ? product.image.url : ''}
+            src={product.image.url ? product.image.url : ""}
             alt=""
             height={"200px"}
           />
@@ -104,9 +107,7 @@ const SingleProduct = () => {
         </div>
         <div className={styles.details}>
           <h3>{product.title}</h3>
-          <p>
-            {product.description}
-          </p>
+          <p>{product.description}</p>
           <div>
             <Button
               variant="outlined"
@@ -122,10 +123,13 @@ const SingleProduct = () => {
         </div>
       </div>
       <div className={styles.right}>
-            {
-              property === 'Stocks' ? <State stocks={product.stocks}/> : property === 'Brands' ?  <State brands={product.brands}/> : <State categories={product.categories} fetchProduct={fetchProduct}/>
-            }  
-        
+        {property === "Stocks" ? (
+          <State stocks={product.stocks} />
+        ) : property === "Brands" ? (
+          <State brands={product.brands} fetchProduct={fetchProduct} />
+        ) : (
+          <State categories={product.categories} fetchProduct={fetchProduct} />
+        )}
       </div>
     </div>
   );

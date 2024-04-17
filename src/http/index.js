@@ -49,6 +49,7 @@ api.put(`/admin/product-add-brand/${productId}/${brandId}`);
 export const removeBrandFromProductApi = (productId,brandId) =>
 api.put(`/admin/product-remove-brand/${productId}/${brandId}`);
 
+
 // [ ]Stock Apis[ ]
 export const createStockApi = (data, id) =>
   mulipartApi.post(`/admin/stock/${id}`, data);
@@ -56,10 +57,16 @@ export const createStockApi = (data, id) =>
 // [ ]Brand Apis[ ]
 export const createBrandApi = (data) => mulipartApi.post(`/admin/brand`, data);
 export const getBrandApi = () => api.get("/admin/brand");
+export const deleteBrandApi = (id) => api.delete(`/admin/brand/${id}`);
 
 // [ ] categories Apis [ ]
 export const getCategoriesApi = () => api.get("/admin/category");
 export const createCategoriesApi = (data) => api.post("/admin/category", data);
+export const deleteCategoryApi = (id) => api.delete(`/admin/category/${id}`);
+
+// [ ] Offer Apis [ ]
+export const getOffersApi = () => api.get(`/admin/offer`);
+
 
 // Interceptors
 // api.interceptors.response.use(
