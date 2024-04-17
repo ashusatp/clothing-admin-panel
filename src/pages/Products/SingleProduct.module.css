@@ -1,0 +1,55 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .image {
+    position: relative;
+    width: 100%;
+    max-width: 400px; /* Adjust as needed */
+  }
+  
+  .image img {
+    width: 50%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .btns {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .details p {
+    font-size: 14px;
+  }
+  @media screen and (min-width: 768px) {
+    .wrapper {
+      flex-direction: row;
+    }
+  
+    .left {
+      width: 40%; /* Adjust as needed */
+    }
+  
+    .right {
+      width: 60%; /* Adjust as needed */
+    }
+  }
+  
