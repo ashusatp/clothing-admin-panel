@@ -88,6 +88,18 @@ const Stocks = () => {
     },
 
     {
+      field: "afterOffer",
+      headerName: "Offer Amount",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      renderCell: (params) => {
+        return (
+          <> {params.row.afterOffer === -1 ? "N/A" : params.row.afterOffer}</>
+        );
+      },
+    },
+
+    {
       field: "accessLevel",
       headerName: "Access Level",
       flex: 2,

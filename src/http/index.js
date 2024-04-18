@@ -36,19 +36,17 @@ export const getProductBrandsApi = (id) =>
 export const createProductApi = (data) =>
   mulipartApi.post("/admin/product", data);
 
-
-export const addCategoryToProductApi = (productId,catId) =>
+export const addCategoryToProductApi = (productId, catId) =>
   api.put(`/admin/product-add-cat/${productId}/${catId}`);
 
-export const removeCategoryFromProductApi = (productId,catId) =>
-api.put(`/admin/product-remove-cat/${productId}/${catId}`);
+export const removeCategoryFromProductApi = (productId, catId) =>
+  api.put(`/admin/product-remove-cat/${productId}/${catId}`);
 
-export const addBrandToProductApi = (productId,brandId) =>
-api.put(`/admin/product-add-brand/${productId}/${brandId}`);
+export const addBrandToProductApi = (productId, brandId) =>
+  api.put(`/admin/product-add-brand/${productId}/${brandId}`);
 
-export const removeBrandFromProductApi = (productId,brandId) =>
-api.put(`/admin/product-remove-brand/${productId}/${brandId}`);
-
+export const removeBrandFromProductApi = (productId, brandId) =>
+  api.put(`/admin/product-remove-brand/${productId}/${brandId}`);
 
 // [ ]Stock Apis[ ]
 export const createStockApi = (data, id) =>
@@ -66,7 +64,13 @@ export const deleteCategoryApi = (id) => api.delete(`/admin/category/${id}`);
 
 // [ ] Offer Apis [ ]
 export const getOffersApi = () => api.get(`/admin/offer`);
+export const createOfferApi = (data) => api.post(`/admin/offer`, data);
+export const deleteOfferApi = (id) => api.delete(`/admin/offer/${id}`);
 
+export const addOfferToProductApi = (productId, offerId) =>
+  api.put(`/admin/add-offer/${productId}/${offerId}`);
+export const removeOfferFromProductApi = (productId, offerId) =>
+  api.put(`/admin/remove-offer/${productId}/${offerId}`);
 
 // Interceptors
 // api.interceptors.response.use(

@@ -7,10 +7,12 @@ import Categories from "../Categories/Categories";
 import Brands from "../Brands/Brands";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProductApi } from "../../http";
+import Offer from "../Offers/Offer";
 const props = {
   Stocks: Stocks,
   Categories: Categories,
   Brands: Brands,
+  Offer: Offer,
 };
 const SingleProduct = () => {
   const [property, setProperty] = useState("Stocks");
@@ -73,6 +75,7 @@ const SingleProduct = () => {
                 <MenuItem value={"Stocks"}>Stocks</MenuItem>
                 <MenuItem value={"Categories"}>Categories</MenuItem>
                 <MenuItem value={"Brands"}>Brands</MenuItem>
+                <MenuItem value={"Offer"}>Offer</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -127,6 +130,8 @@ const SingleProduct = () => {
           <State stocks={product.stocks} />
         ) : property === "Brands" ? (
           <State brands={product.brands} fetchProduct={fetchProduct} />
+        ) : property === "Offer" ? (
+          <State Offer={product.offers} fetchProduct={fetchProduct} />
         ) : (
           <State categories={product.categories} fetchProduct={fetchProduct} />
         )}

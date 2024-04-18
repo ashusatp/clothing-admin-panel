@@ -9,26 +9,18 @@ import {
   TextField,
   useTheme,
   Button,
-  styled,
   TextareaAutosize,
 } from "@mui/material";
 
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 
-import { useNavigate } from "react-router-dom";
-import {
-  createCategoriesApi,
-  deleteCategoryApi,
-  getCategoriesApi,
-  getOffersApi,
-} from "../../http";
+import { createOfferApi, deleteOfferApi, getOffersApi } from "../../http";
 import Header from "../../components/Header";
 
 const AllOffers = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
 
   const fetchOffers = async () => {
@@ -45,13 +37,13 @@ const AllOffers = () => {
     }
   };
 
-  const handleDelete = async (catId) => {
-    // try {
-    //   const { data } = await deleteCategoryApi(catId);
-    //   fetchOffers();
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  const handleDelete = async (offerId) => {
+    try {
+      const { data } = await deleteOfferApi(offerId);
+      fetchOffers();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -65,7 +57,7 @@ const AllOffers = () => {
     {
       field: "discount",
       headerName: "Discount in (%)",
-      flex: .5,
+      flex: 0.5,
       renderCell: (params) => {
         return <>{`${params.row.discount} %`}</>;
       },
@@ -108,7 +100,7 @@ const AllOffers = () => {
               variant="contained"
               color="success"
               onClick={() => {
-                handleDelete(params.row._id);
+                // handleDelete(params.row._id);
               }}
             >
               View
@@ -227,13 +219,19 @@ const CreateCategory = ({ open, handleClose, fetchOffers }) => {
   const [expiresAt, setExpiresAt] = useState("");
 
   const handleSubmit = async () => {
-    // try {
-    //   const { data } = await createCategoriesApi({ category });
-    //   fetchCategories();
-    //   handleClose();
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    const payload = {
+      title,
+      discount: Number(discount),
+      description,
+      end_at: expiresAt + "T23:59:59",
+    };
+    try {
+      const { data } = await createOfferApi(payload);
+      fetchOffers();
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
